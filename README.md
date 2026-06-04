@@ -1,1 +1,1 @@
-# java-weather-service
+# weather-service
