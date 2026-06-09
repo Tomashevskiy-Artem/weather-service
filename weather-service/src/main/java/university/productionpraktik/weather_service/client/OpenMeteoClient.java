@@ -1,5 +1,6 @@
 package university.productionpraktik.weather_service.client;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import university.productionpraktik.weather_service.dto.GeocodingResponse;
@@ -10,8 +11,8 @@ public class OpenMeteoClient { // будет работать с open-meteo.com
     private final WebClient webclient; // при создании объекта MeteoClient
                                         // он имеет HTTP-клиента
 
-    public OpenMeteoClient() {
-        this.webclient = WebClient.create("https://geocoding-api.open-meteo.com");
+    public OpenMeteoClient(@Qualifier ("openmeteoWebClient") WebClient webClient) {
+        this.webclient = webClient;
     }
 
     // Задача: клиент должен выполнить запрос (город -> координаты)

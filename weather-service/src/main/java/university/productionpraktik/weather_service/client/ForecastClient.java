@@ -1,5 +1,6 @@
 package university.productionpraktik.weather_service.client;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import university.productionpraktik.weather_service.dto.ForecastResponse;
@@ -12,14 +13,9 @@ import java.time.Duration;
 public class ForecastClient {
     private final WebClient webclient;
 
-    public ForecastClient() {
-        HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000) // ожидание соединения 3 секунды
-                .responseTimeout(Duration.ofSeconds(5)); // ожидание ответа в течение 5 секунд
-        this.webclient = WebClient.builder()
-                .baseUrl("https://api.open-meteo.com")
-                .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .build();
+    // @Qualifier для возмоности использовать несколько WebClient-ов
+    public ForecastClient(@Qualifier("forecastWebClient") WebClient webclient) {
+        this.webclient = webclient;
     }
 
     public ForecastResponse getResponse(double latitude, double longitude){
