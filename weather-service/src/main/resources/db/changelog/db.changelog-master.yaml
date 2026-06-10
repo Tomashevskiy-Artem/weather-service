@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: tomash
+
+      changes:
+        - createTable:
+            tableName: weather_snapshot
+
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: city
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: provider
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: temperature_celsius
+                  type: NUMERIC(5,2)
+
+              - column:
+                  name: wind_speed
+                  type: NUMERIC(6,2)
+
+              - column:
+                  name: raw_payload
+                  type: JSONB
+
+              - column:
+                  name: observed_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+
+
+        - createIndex:
+            tableName: weather_snapshot
+            indexName: idx_weather_snapshot_city_created_at
+
+            columns:
+              - column:
+                  name: city
+
+              - column:
+                  name: created_at
+                  descending: true
